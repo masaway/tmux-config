@@ -1,0 +1,95 @@
+# tmux チートシート（カスタム設定版）
+
+## 基本情報
+- プレフィックスキー: Ctrl+s
+- 設定ファイル: ~/.tmux.conf
+- このヘルプ: Ctrl+s /
+
+## セッション管理
+tmux new-session -s <名前>     # 新しいセッションを作成
+tmux list-sessions             # セッション一覧を表示
+tmux attach-session -t <名前>  # セッションにアタッチ
+tmux detach-session           # セッションからデタッチ
+tmux kill-session -t <名前>   # セッションを削除
+
+## キーバインド - セッション
+Ctrl+s d                      # セッションからデタッチ
+Ctrl+s $                      # セッション名を変更
+Ctrl+s s                      # セッション選択
+
+## キーバインド - ウィンドウ
+Ctrl+s c                      # 新しいウィンドウを作成
+Ctrl+s w                      # ウィンドウ一覧を表示
+Ctrl+s 0-9                    # 番号でウィンドウを選択
+Ctrl+s n                      # 次のウィンドウに移動
+Ctrl+s p                      # 前のウィンドウに移動
+Ctrl+s ,                      # ウィンドウ名を変更
+Ctrl+s &                      # ウィンドウを削除
+
+## キーバインド - ペイン
+Ctrl+s \                      # ペインを水平分割（右に新しいペイン）
+Ctrl+s -                      # ペインを垂直分割（下に新しいペイン）
+Ctrl+s h                      # 左のペインに移動（vim風）
+Ctrl+s j                      # 下のペインに移動（vim風）
+Ctrl+s k                      # 上のペインに移動（vim風）
+Ctrl+s l                      # 右のペインに移動（vim風）
+Ctrl+s H                      # ペインを左に拡大（vim風）
+Ctrl+s J                      # ペインを下に拡大（vim風）
+Ctrl+s K                      # ペインを上に拡大（vim風）
+Ctrl+s L                      # ペインを右に拡大（vim風）
+Ctrl+s x                      # ペインを削除
+Ctrl+s !                      # ペインを新しいウィンドウに分離
+Ctrl+s z                      # ペインを最大化/元に戻す
+
+## キーバインド - コピーモード
+Ctrl+s [                      # コピーモードに入る
+Space                         # 選択開始
+Enter                         # 選択をコピー
+Ctrl+s ]                      # ペースト
+q                             # コピーモードを終了
+
+## キーバインド - その他
+Ctrl+s ?                      # キーバインド一覧を表示
+Ctrl+s r                      # 設定ファイルをリロード
+Ctrl+s :                      # コマンドモードに入る
+Ctrl+s t                      # 時刻を表示
+
+## マウス操作（有効化済み）
+ダブルクリック                # タイルレイアウトに変更
+マウスホイール                # 通常スクロール（1行ずつ）
+Shift+マウスホイール          # 高速スクロール（半ページ）
+ペインの境界線ドラッグ        # ペインサイズを調整
+ペインクリック                # ペインをアクティブに
+
+## コマンドライン操作
+tmux list-keys                # すべてのキーバインドを表示
+tmux show-options -g          # グローバル設定を表示
+tmux source-file ~/.tmux.conf # 設定ファイルを再読み込み
+tmux capture-pane -t <番号> -p # ペインの内容をキャプチャ
+tmux kill-server              # すべてのセッションを終了
+
+## 開発環境セットアップ例
+# 3ペインレイアウト（Claude + npm run dev + git）
+tmux new-session -s dev-work
+tmux split-window -h -p 30    # 右30%でログ監視
+tmux split-window -v          # 右を上下分割
+tmux select-pane -t 0         # 左ペインを選択
+
+## よく使うコマンド組み合わせ
+Ctrl+s c, Ctrl+s ,           # 新しいウィンドウを作成して名前を変更
+Ctrl+s \, Ctrl+s j           # 水平分割して下のペインに移動
+Ctrl+s z, <作業>, Ctrl+s z   # ペインを最大化して作業、元に戻す
+
+## レイアウト
+Ctrl+s Space                  # 次のレイアウトに変更
+Ctrl+s Alt+1                  # even-horizontal
+Ctrl+s Alt+2                  # even-vertical
+Ctrl+s Alt+3                  # main-horizontal
+Ctrl+s Alt+4                  # main-vertical
+Ctrl+s Alt+5                  # tiled
+
+## 便利なtips
+- 長いコマンドは tmux コマンドモード（Ctrl+s :）で実行
+- ペインの同期: setw synchronize-panes で全ペインに同じ入力
+- セッション保存: tmux-resurrect プラグインで永続化
+- ログ監視: tail -f ファイル名 で別ペインでログを監視
