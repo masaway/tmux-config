@@ -378,105 +378,21 @@ unbind <key>
 bind <key> <command>
 ```
 
-### Windows Terminal/WSL環境での日本語IME問題
+### 文字入力の問題が発生する場合
 
-Windows Terminal上でWSLのtmuxを使用している際に、日本語IME（Input Method Editor）の変換候補ウィンドウの位置がずれたり、文字が残って表示されたりする問題があります。
+文字入力時に表示の問題が発生する場合は、以下の設定を確認してください：
 
-#### 症状
-- IME変換候補ウィンドウが正しい位置に表示されない
-- 入力した文字が画面に残ったままになる
-- 変換確定後も候補ウィンドウが表示され続ける
-- 日本語入力時の応答性が悪い
-
-#### 解決方法
-
-自動的な設定適用（推奨）：
 ```bash
-# WSL環境では自動的にIME対応設定が適用されます
-# ~/.tmux.confに以下の設定が含まれています：
+# 入力の応答性を向上
+set -sg escape-time 10
 
-# WSL環境を検出して専用設定を読み込む
-if-shell 'uname -r | grep -q microsoft' 'source-file ~/.config/tmux/wsl-ime-fixes.conf'
+# 画面再描画の頻度を調整
+set -g status-interval 5
 
-# Windows Terminal使用時の追加設定
-if-shell '[[ "$TERM_PROGRAM" == "Windows Terminal" ]] || [[ "$WT_SESSION" != "" ]]' {
-    set -g default-terminal "tmux-256color"
-    set -ga terminal-overrides ",*:RGB"
-    set -sg escape-time 0
-    set -g assume-paste-time 0
-    set -g status-interval 1
-}
-```
-
-手動での設定（必要に応じて）：
-```bash
-# IME応答性を向上
-set -sg escape-time 0
-set -g assume-paste-time 0
-
-# 画面再描画を頻繁に行う
-set -g status-interval 1
-
-# 文字エンコーディングを強制
+# 文字エンコーディングの設定
 set -g default-terminal "tmux-256color"
 set -ga terminal-overrides ",*:RGB"
-
-# ペインタイトルの表示を無効化（候補ウィンドウとの干渉を防ぐ）
-set -g pane-border-status off
 ```
-
-#### 専用設定ファイル
-
-WSL環境用の専用設定ファイル `configs/wsl-ime-fixes.conf` が自動的に読み込まれます：
-
-```bash
-# 設定ファイルの場所を確認
-ls -la ~/.config/tmux/wsl-ime-fixes.conf
-
-# 設定を手動で適用
-tmux source-file ~/.config/tmux/wsl-ime-fixes.conf
-```
-
-#### 追加のトラブルシューティング
-
-1. **Windows Terminalの設定確認**
-   - Windows Terminalの設定で「Use legacy console」が無効になっていることを確認
-   - フォント設定で日本語フォントが正しく設定されていることを確認
-
-2. **WSLの設定確認**
-   ```bash
-   # WSL環境の確認
-   uname -r | grep microsoft
-   
-   # 環境変数の確認
-   echo $WT_SESSION
-   echo $TERM_PROGRAM
-   ```
-
-3. **tmux設定の確認**
-   ```bash
-   # 現在の設定を確認
-   tmux show-options -g escape-time
-   tmux show-options -g default-terminal
-   
-   # 設定を強制的に再読み込み
-   tmux source-file ~/.tmux.conf
-   ```
-
-4. **完全なリセット**
-   ```bash
-   # tmuxセッションを完全にリセット
-   tmux kill-server
-   tmux new-session
-   ```
-
-#### 既知の制限事項
-
-- Windows Terminal以外のターミナルエミュレーターでは効果が限定的な場合があります
-- WSL1とWSL2で動作が異なる場合があります
-- 一部のIMEソフトウェアでは完全な解決が困難な場合があります
-
-この設定により、多くの場合でIME使用時の表示問題が改善されますが、完全に解決しない場合は、Windows Terminalの設定やWSLの設定も併せて確認することをお勧めします。
 
 ## 参考になるリソース
 

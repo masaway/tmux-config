@@ -10,7 +10,6 @@ This is a personal tmux configuration repository written in Japanese. It contain
 
 - `configs/.tmux.conf` - Main tmux configuration file
 - `configs/.tmux-cheatsheet.txt` - Cheat sheet for key bindings
-- `configs/wsl-ime-fixes.conf` - WSL/Windows Terminal IME optimization settings
 - `examples/` - Contains basic.conf, advanced.conf, and minimal.conf variants
 - `docs/` - Installation guide, customization guide, and keybindings documentation
 
@@ -21,10 +20,6 @@ This is a personal tmux configuration repository written in Japanese. It contain
 # Install configuration files
 cp configs/.tmux.conf ~/.tmux.conf
 cp configs/.tmux-cheatsheet.txt ~/.tmux-cheatsheet.txt
-
-# Install WSL/Windows Terminal IME optimization (automatically applied)
-mkdir -p ~/.config/tmux
-cp configs/wsl-ime-fixes.conf ~/.config/tmux/
 
 # Reload configuration
 tmux source-file ~/.tmux.conf
@@ -67,12 +62,6 @@ tmux show-options -g prefix
 - Active pane highlighting
 - Git branch display in status bar
 
-### IME Optimization (WSL/Windows Terminal)
-- Automatic detection of WSL environment
-- Optimized escape time for Japanese input
-- Enhanced screen refresh rate for IME candidate windows
-- Reduced display artifacts during Japanese text input
-- Configured in configs/wsl-ime-fixes.conf
 
 ## File Structure
 
@@ -80,8 +69,7 @@ tmux show-options -g prefix
 tmux-config/
 ├── configs/
 │   ├── .tmux.conf              # Main configuration
-│   ├── .tmux-cheatsheet.txt    # Key bindings reference
-│   └── wsl-ime-fixes.conf      # WSL/Windows Terminal IME fixes
+│   └── .tmux-cheatsheet.txt    # Key bindings reference
 ├── examples/
 │   ├── basic.conf              # Basic setup
 │   ├── advanced.conf           # Advanced features
@@ -105,11 +93,6 @@ tmux-config/
 2. Check terminal compatibility
 3. Test with different terminal emulators
 
-### IME Input Issues (WSL/Windows Terminal)
-1. Verify WSL environment is detected: `uname -r | grep microsoft`
-2. Check if IME optimization is loaded: `tmux show-options -g escape-time`
-3. Ensure wsl-ime-fixes.conf is in ~/.config/tmux/
-4. For persistent issues, see docs/customization.md for detailed troubleshooting
 
 ## Development Notes
 

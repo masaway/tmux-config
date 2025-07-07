@@ -135,7 +135,7 @@
 | `Ctrl+s ~` | 最近のメッセージを表示 |
 | `Ctrl+s /` | チートシートを表示（カスタム） |
 | `Ctrl+s R` | 全セッションで.zshrcを再読み込み |
-| `Ctrl+s Ctrl+l` | 画面クリア＋履歴クリア（IME状態もリセット） |
+| `Ctrl+s Ctrl+l` | 画面クリア＋履歴クリア |
 
 ## マウス操作
 
@@ -267,45 +267,21 @@ echo $LC_ALL
 tmux show-options -g default-terminal
 ```
 
-### 日本語IME入力で問題が発生する場合（WSL/Windows Terminal）
+### 文字入力で問題が発生する場合
 
-Windows Terminal上でWSLを使用している際に、日本語IME使用時に以下の問題が発生することがあります：
+文字入力時に表示の問題が発生する場合は、以下の設定を確認してください：
 
-**症状**:
-- IME変換候補ウィンドウの位置がずれる
-- 入力した文字が画面に残る
-- 変換確定後も候補ウィンドウが表示される
+```bash
+# 入力の応答性を向上
+set -sg escape-time 10
 
-**解決方法**:
-1. IME最適化設定の確認
-   ```bash
-   # WSL環境の検出確認
-   uname -r | grep microsoft
-   
-   # 設定ファイルの確認
-   ls -la ~/.config/tmux/wsl-ime-fixes.conf
-   ```
+# 画面再描画の頻度を調整
+set -g status-interval 5
 
-2. 設定の強制適用
-   ```bash
-   # 設定を再読み込み
-   tmux source-file ~/.tmux.conf
-   
-   # IME状態をリセット
-   Ctrl+s Ctrl+l  # 画面クリア＋履歴クリア
-   ```
-
-3. 設定値の確認
-   ```bash
-   # IME最適化が適用されているか確認
-   tmux show-options -g escape-time
-   # 結果: 0 (WSL環境) または 1 (通常環境)
-   
-   tmux show-options -g status-interval
-   # 結果: 1 (WSL環境では高頻度更新)
-   ```
-
-**注意**: この最適化設定はWSL環境でのみ自動的に適用されます。通常のLinux環境では従来の設定が使用されます。
+# 文字エンコーディングの設定
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ",*:RGB"
+```
 
 ## 参考資料
 
