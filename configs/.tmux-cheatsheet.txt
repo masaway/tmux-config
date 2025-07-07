@@ -6,11 +6,12 @@
 - このヘルプ: Ctrl+s /
 
 ## セッション管理
-tmux new-session -s <名前>     # 新しいセッションを作成
-tmux list-sessions             # セッション一覧を表示
-tmux attach-session -t <名前>  # セッションにアタッチ
+tmux new-session -s <名前>     # 新しいセッションを作成 (tmux new -s <名前>)
+tmux list-sessions             # セッション一覧を表示 (tmux ls)
+tmux attach-session -t <名前>  # セッションにアタッチ (tmux a -t <名前>)
 tmux detach-session           # セッションからデタッチ
-tmux kill-session -t <名前>   # セッションを削除
+tmux kill-session -t <名前>   # セッションを削除 (tmux kill-sess -t <名前>)
+tmux has-session -t <名前>    # セッションの存在確認 (tmux has -t <名前>)
 
 ## キーバインド - セッション
 Ctrl+s d                      # セッションからデタッチ
@@ -51,6 +52,7 @@ q                             # コピーモードを終了
 ## キーバインド - その他
 Ctrl+s ?                      # キーバインド一覧を表示
 Ctrl+s r                      # 設定ファイルをリロード
+Ctrl+s R                      # 全セッションで .zshrc をリロード
 Ctrl+s :                      # コマンドモードに入る
 Ctrl+s t                      # 時刻を表示
 
@@ -68,6 +70,17 @@ tmux show-options -g          # グローバル設定を表示
 tmux source-file ~/.tmux.conf # 設定ファイルを再読み込み
 tmux capture-pane -t <番号> -p # ペインの内容をキャプチャ
 tmux kill-server              # すべてのセッションを終了
+
+## よく使う略記コマンド
+tmux ls                      # セッション一覧
+tmux new -s <名前>           # 新しいセッション作成
+tmux a -t <名前>             # セッションにアタッチ
+tmux has -t <名前>           # セッション存在確認
+tmux kill-sess -t <名前>     # セッション削除
+tmux neww                    # 新しいウィンドウ作成
+tmux lsw                     # ウィンドウ一覧
+tmux lsp                     # ペイン一覧
+tmux splitw                  # ペイン分割
 
 ## 開発環境セットアップ例
 # 3ペインレイアウト（Claude + npm run dev + git）

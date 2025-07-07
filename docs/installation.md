@@ -68,8 +68,12 @@ cp ~/tmux-config/configs/.tmux.conf ~/.tmux.conf
 # チートシートをコピー
 cp ~/tmux-config/configs/.tmux-cheatsheet.txt ~/.tmux-cheatsheet.txt
 
+# WSL/Windows Terminal用IME最適化設定をコピー
+mkdir -p ~/.config/tmux
+cp ~/tmux-config/configs/wsl-ime-fixes.conf ~/.config/tmux/
+
 # 設定ファイルのパーミッション設定
-chmod 644 ~/.tmux.conf ~/.tmux-cheatsheet.txt
+chmod 644 ~/.tmux.conf ~/.tmux-cheatsheet.txt ~/.config/tmux/wsl-ime-fixes.conf
 ```
 
 ### 4. 設定の反映
@@ -108,6 +112,27 @@ tmux source-file ~/.tmux.conf
 ```bash
 # Ctrl+s / でヘルプが表示されることを確認
 ```
+
+### 4. IME最適化設定の確認（WSL/Windows Terminal環境）
+
+Windows Terminal上でWSLを使用している場合、IME最適化設定が自動的に適用されます：
+
+```bash
+# WSL環境の検出確認
+uname -r | grep microsoft
+
+# IME最適化設定が適用されているか確認
+tmux show-options -g escape-time
+# 結果: escape-time 0 (WSL環境) または escape-time 1 (通常環境)
+
+# 設定ファイルの存在確認
+ls -la ~/.config/tmux/wsl-ime-fixes.conf
+```
+
+**期待される効果**:
+- 日本語入力時の応答性向上
+- IME変換候補ウィンドウの位置ずれ軽減
+- 文字表示のアーティファクト削減
 
 ## トラブルシューティング
 
@@ -202,10 +227,15 @@ fi
 cp configs/.tmux.conf ~/.tmux.conf
 cp configs/.tmux-cheatsheet.txt ~/.tmux-cheatsheet.txt
 
+# WSL/Windows Terminal用IME最適化設定
+mkdir -p ~/.config/tmux
+cp configs/wsl-ime-fixes.conf ~/.config/tmux/
+
 # パーミッション設定
-chmod 644 ~/.tmux.conf ~/.tmux-cheatsheet.txt
+chmod 644 ~/.tmux.conf ~/.tmux-cheatsheet.txt ~/.config/tmux/wsl-ime-fixes.conf
 
 echo "インストールが完了しました！"
+echo "WSL/Windows Terminal環境でのIME最適化設定も含まれています。"
 echo "新しいtmuxセッションを開始するか、既存のセッションで 'tmux source-file ~/.tmux.conf' を実行してください。"
 ```
 
